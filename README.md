@@ -1,4 +1,5 @@
 PopFeed 🎈
+
 Welcome to PopFeed, a Twitter clone being developed by me, using Django and Angular! This project is an exploration of Django Rest Framework, pagination techniques, and an opportunity for me to enhance my skills in both Angular and Django frameworks. 🚀
 
 Project Overview
