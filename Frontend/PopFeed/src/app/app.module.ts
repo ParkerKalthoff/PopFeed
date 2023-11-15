@@ -5,18 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { HomeComponent } from './home/home.component';
-import { NotificationsComponent } from './notifications/notifications.component';
-import { BookmarkedComponent } from './bookmarked/bookmarked.component';
-import { ProfileComponent } from './profile/profile.component';
+import { LoginComponent } from './login/login.component';
+import { HomeTweetComponent } from './home/home-tweet/home-tweet.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     HomeComponent,
-    NotificationsComponent,
-    BookmarkedComponent,
-    ProfileComponent
+    LoginComponent,
+    HomeTweetComponent,
   ],
   imports: [
     BrowserModule,

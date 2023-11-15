@@ -1,0 +1,22 @@
+.main {
+    margin-top: -px;
+    margin-left: 8%;
+    margin-right: 8%;
+    width: auto;
+    min-height: 100px;
+    height: auto;
+}
+
+.navbar-item {
+    width: 20%;
+    background-color: aquamarine;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.content-item {
+    vertical-align: top;
+    display: inline-block;
+    background-color: lightcoral;
+    width: 80%;
+}
