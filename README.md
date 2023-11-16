@@ -5,20 +5,20 @@ Welcome to PopFeed, a Twitter clone being developed by me, using Django and Angu
 Project Overview
 PopFeed is a social media platform that allows users to share their thoughts, ideas, and updates with the world. Here are some of the basic functionalities of the site:
 
-🔁 Pops (Tweets): I can create pops (limited to 280 characters, just like tweets) to express myself and share content with others.
+🔁 Pops (Tweets): You can create pops (limited to 280 characters, just like tweets) to express yourself and share content with others.
 
-🔍 Search and Discovery: I can search for other users, pops, or hashtags to discover interesting content and connect with like-minded individuals.
+🔍 Search and Discovery: You can search for other users, pops, or hashtags to discover interesting content and connect with like-minded individuals.
 
-👥 Follow and Connect: I can follow other users to stay updated with their pops and build a network of connections within the platform.
+👥 Follow and Connect: You can follow other users to stay updated with their pops and build a network of connections within the platform.
 
-🌟 Likes and Interactions: I can engage with pops by liking them and leaving comments, fostering conversations and interactions among the community.
+🌟 Likes and Interactions: You can engage with pops by liking them and leaving comments, fostering conversations and interactions among the community.
 
-📜 Pagination: I utilize pagination techniques to display pops in a user-friendly manner, loading and presenting a subset of pops at a time. This improves performance and provides a smooth browsing experience.
+📜 Pagination: I'll utilize pagination techniques to display pops in a user-friendly manner, loading and presenting a subset of pops at a time. This improves performance and provides a smooth browsing experience.
 
 Technologies Used
 🔧 Django: A powerful Python-based web framework that I use to build the backend server and handle data storage and retrieval.
 
-🚀 Django Rest Framework (DRF): I leverage DRF to create RESTful APIs that power my frontend and handle functionalities such as authentication, data serialization, and pagination.
+🚀 Django Rest Framework (DRF): I leverage DRF to create RESTful APIs that power my front end and handle functionalities such as authentication, data serialization, and pagination.
 
 🖥️ Angular: A popular JavaScript framework that I use to build the frontend user interface of PopFeed, providing an interactive and dynamic experience.
 
@@ -27,7 +27,7 @@ Technologies Used
 Getting Started
 To run PopFeed locally and start exploring its functionalities, follow these steps:
 
-Clone the repository: git clone https://github.com/your-username/PopFeed.git
+Clone the repository: git clone https://github.com/ParkerKalthoff/PopFeed.git
 
 Set up the Django backend:
 
