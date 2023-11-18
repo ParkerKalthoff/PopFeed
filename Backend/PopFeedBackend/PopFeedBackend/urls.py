@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from popfeed import views
-
+from popfeed.views import Pop, Anom_timeline_pops
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('Pops/', views.Pop_Posts)
+    path('Pops/', views.PopPosts),
+    path('api/pops/<int:pop_id>/', Pop),
+    path('api/anom_timeline_pops/<int:page>/', Anom_timeline_pops),
 ]
