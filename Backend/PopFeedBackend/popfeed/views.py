@@ -7,10 +7,12 @@ from rest_framework.response import Response
 from rest_framework import status
 # Create your views here.
 
+
+# Pop Getters :::
 @api_view(['GET'])
 def Pop(request, pop_id):
 
-    if request.method == 'GET': # Pop Getter
+    if request.method == 'GET':
         pop = get_object_or_404(PopPosts, pk=pop_id)
         serializer = PopPostsSerializer(pop)
         return Response({"Pop": serializer.data})

@@ -3,7 +3,7 @@ from django.db import models
 
 class UserAccount(AbstractUser):
     handle = models.CharField(max_length=15, null=False)
-    bio = models.TextField(max_length=160, blank=True)
+    bio = models.TextField(max_length=140, blank=True)
 
 class UserFollowing(models.Model):
     follower_id = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='followers')

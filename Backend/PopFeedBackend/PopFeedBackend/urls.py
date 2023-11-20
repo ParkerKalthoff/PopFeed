@@ -14,13 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from popfeed import views
-from popfeed.views import Pop, Anom_timeline_pops
+from popfeed.views import *
 
 urlpatterns = [
+    
     path('admin/', admin.site.urls),
-    path('Pops/', views.PopPosts),
+    # User login paths
+    re_path('signup', views.signup),
+    re_path('login', views.login),
+    re_path('test_token', views.test_token),
+
+
+    # API paths
+
     path('api/pops/<int:pop_id>/', Pop),
     path('api/anom_timeline_pops/<int:page>/', Anom_timeline_pops),
 ]

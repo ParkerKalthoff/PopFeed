@@ -12,7 +12,7 @@ const routes: Routes =
   { path: 'bookmarked', component: BookmarkedComponent},
   { path: 'login', component: LoginComponent},
   { path: 'home', component: HomeComponent},
-  
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 
 ];
 

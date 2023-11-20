@@ -20,13 +20,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+    # This project is never going to be used in production, feel free to steal key :)
 SECRET_KEY = 'django-insecure-9050=uz-@^_m+wber=b8o%jmr2jqjgdaphztr7z8-rw-%s0how'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+
 ALLOWED_HOSTS = []
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://yourfrontenddomain.com",
+]
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 AUTH_USER_MODEL = 'popfeed.UserAccount'
@@ -40,9 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'popfeed', # Main App
     'rest_framework', # HUR HUR HUR BWAAHAHAHH
+    'corsheaders', #bwahahahha
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
