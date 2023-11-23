@@ -7,8 +7,20 @@ from rest_framework.response import Response
 from rest_framework import status
 # Create your views here.
 
+# User Apis ----------------
+@api_view(['POST'])
+def login(request):
+    return Response({})
 
-# Pop Getters :::
+@api_view(['POST'])
+def signup(request):
+    return Response({})
+
+@api_view(['POST'])
+def test_token(request):
+    return Response({})
+
+# Pop Getters --------------
 @api_view(['GET'])
 def Pop(request, pop_id):
 
