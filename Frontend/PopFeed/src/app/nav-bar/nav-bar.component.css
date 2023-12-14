@@ -7,5 +7,21 @@
 }
 
 .profile{
-    
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.container-button {
+    background-color: aquamarine;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+.button {
+    max-width: max-content;
+    margin-left: 1%;
+    padding: 2%;
+    border-radius: 50px;
+    background-color: aqua;
 }

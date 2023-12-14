@@ -24,3 +24,15 @@ def Single_Pop(request):
 # TODO: Make generic timeline api call
 # TODO: Make User Specific timeline api call
 # TODO: Make list of other needed functions
+        
+@api_view(['POST'])
+def login(request):
+    return Response({})
+
+@api_view(['POST'])
+def signup(request):
+    return Response({})
+
+@api_view(['GET'])
+def test_token(request):
+    return Response({})

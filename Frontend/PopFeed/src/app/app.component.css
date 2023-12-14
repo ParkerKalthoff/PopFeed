@@ -1,5 +1,5 @@
 .main {
-    margin-top: -px;
+    margin-top: -10px;
     margin-left: 8%;
     margin-right: 8%;
     width: auto;
@@ -8,15 +8,15 @@
 }
 
 .navbar-item {
-    width: 20%;
-    background-color: aquamarine;
-    display: inline-block;
+    width: 13%;
+    height: 101%;
+    position: fixed;
     vertical-align: top;
 }
 
 .content-item {
     vertical-align: top;
     display: inline-block;
-    background-color: lightcoral;
     width: 80%;
+    margin-left: 18%;
 }

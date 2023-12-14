@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'popfeed', # Main App
     'rest_framework', # HUR HUR HUR BWAAHAHAHH
+    'rest_framework.authtoken', # Token Auth
 ]
 
 MIDDLEWARE = [
