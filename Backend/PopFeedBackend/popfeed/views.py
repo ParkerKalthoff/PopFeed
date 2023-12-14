@@ -6,6 +6,15 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+
 # Create your views here.
 
 
@@ -13,7 +22,12 @@ from rest_framework.authtoken.models import Token
 # User Apis ----------------
 @api_view(['POST'])
 def login(request):
-    return Response({})
+    user = get_object_or_404(UserAccount, username=request.data['username'])
+    if not user.check_password(request.data['password']):
+        return Response({"errors": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
+    token, created = Token.objects.get_or_create(user=user)
+    serializer = UserAccountSerializer(instance=user)
+    return Response({"token": token.key, "user": serializer.data})
 
 @api_view(['POST'])
 def signup(request):
@@ -28,9 +42,11 @@ def signup(request):
     return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
 def test_token(request):
-    return Response({})
+    return Response("passed for {}".format(request.user.username))
 
 
 
