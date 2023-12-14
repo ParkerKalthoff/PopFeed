@@ -10,7 +10,7 @@ from .models import *
 class UserAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAccount
-        fields = ['id', 'username', 'handle', 'bio']
+        fields = ['id', 'username','email','password','handle', 'bio']
 
 class UserFollowingSerializer(serializers.ModelSerializer):
     class Meta:
