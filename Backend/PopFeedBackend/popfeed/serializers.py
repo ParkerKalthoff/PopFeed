@@ -20,24 +20,15 @@ class UserFollowingSerializer(serializers.ModelSerializer):
 class PopPostsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PopPosts
-        fields = ['pop_id', 'user_id', 'created_at', 'content']
+        fields = ['pop_id', 'user_id', 'created_at', 'content', 'reply_to']
 
 class PopLikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PopLikes
         fields = ['pop_id', 'user_id', 'created_at']
 
-class PopCommentsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PopComments
-        fields = ['comment_id', 'pop_id', 'user_id', 'content', 'created_at']
 
 class PopRepopSerializer(serializers.ModelSerializer):
     class Meta:
         model = PopRepop
         fields = ['pop_id', 'user_id', 'created_at']
-
-class CommentLikesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CommentLikes
-        fields = ['comment_id', 'user_id', 'created_at']

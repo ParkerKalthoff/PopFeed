@@ -19,6 +19,7 @@ class PopPosts(models.Model):
     user_id = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     content = models.TextField(max_length=140, null=False)
+    reply_to = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
 
 class PopLikes(models.Model):
     pop_id = models.ForeignKey(PopPosts, on_delete=models.CASCADE)
@@ -29,13 +30,6 @@ class PopLikes(models.Model):
         unique_together = (("pop_id", "user_id"),)
         managed = False
 
-class PopComments(models.Model):
-    comment_id = models.AutoField(primary_key=True)
-    pop_id = models.ForeignKey(PopPosts, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    content = models.TextField(max_length=140, null=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    
 class PopRepop(models.Model):
     pop_id = models.ForeignKey(PopPosts, on_delete=models.CASCADE)
     user_id = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
@@ -43,13 +37,4 @@ class PopRepop(models.Model):
     # Primary Key
     class Meta:
         unique_together = (("pop_id", "user_id"),)
-        managed = False
-
-class CommentLikes(models.Model):
-    comment_id = models.ForeignKey(PopComments, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    # Primary Key
-    class Meta:
-        unique_together = (("comment_id", "user_id"),)
         managed = False

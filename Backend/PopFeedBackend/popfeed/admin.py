@@ -1,5 +1,5 @@
 from django.contrib import admin
-from popfeed.models import CommentLikes, PopComments, PopLikes, PopPosts, PopRepop, UserAccount, UserFollowing
+from popfeed.models import *
 
 # Register your models here.
 
@@ -8,7 +8,4 @@ admin.site.register(UserFollowing)
 
 admin.site.register(PopPosts)
 admin.site.register(PopLikes)
-admin.site.register(PopComments)
 admin.site.register(PopRepop)
-
-admin.site.register(CommentLikes)
