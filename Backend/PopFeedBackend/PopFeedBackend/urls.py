@@ -30,8 +30,8 @@ urlpatterns = [
 
     # API paths
 
-    path('api/pops/<int:pop_id>/', Pop),
-    path('api/anon/timeline/<int:page>/', Anom_timeline_pops),
-    path('api/user/timeline/<int:page>/', user_timelime_pops),
+    path('pops/<int:pop_id>/', Pop),
+    path('pops/anon/timeline/<int:page>/', anom_timeline),
+    path('pops/user/timeline/<int:page>/', user_timelime),
 
 ]

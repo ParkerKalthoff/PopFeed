@@ -10,11 +10,6 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-
-# Create your views here.
-
-
-
 # User Auth Apis ----------------
 @api_view(['POST'])
 def login(request):
@@ -47,6 +42,11 @@ def test_token(request):
 
 # Pop Getters --------------
 
+    # Interaction Timeline --------------
+
+    # TODO: Return Pops that were liked by a user
+
+    # TODO: Return Pops that were repopped by a user
 
     # Single Pop --------------
 
@@ -60,10 +60,10 @@ def Pop(request, pop_id):
         return Response({"Pop": serializer.data})
     
 
-    # Timeline Pops --------------
+    # Normal Timeline Pops --------------
 
 @api_view(['GET'])
-def Anom_timeline_pops(request, page):
+def anom_timeline(request, page):
 
     if request.method == 'GET':
         page = max(int(page), 1)
@@ -77,7 +77,7 @@ def Anom_timeline_pops(request, page):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication, SessionAuthentication])
 @permission_classes([IsAuthenticated])
-def user_timelime_pops(request, page): 
+def user_timelime(request, page): 
 
     if request.method == 'GET':
         page = max(int(page), 1)
@@ -90,6 +90,25 @@ def user_timelime_pops(request, page):
         recent_pops = PopPosts.objects.filter(user_id__id__in=following).order_by('-created_at')[start_index:end_index]
         serializer = PopPostsSerializer(recent_pops, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
 
-# TODO: Make list of other needed functions
+# TODO: v Return User specific Timeline that includes Repops v
+    
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def user_timelime_with_repops(request, page): 
+    return Response("User timeline w/ Repops || Not Implemented", status=status.HTTP_501_NOT_IMPLEMENTED)
+
+# Pop Interactions --------------
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def like(request, pop_id):
+    return Response("Like || Not Implemented", status=status.HTTP_501_NOT_IMPLEMENTED)
+
+# TODO: Like Function
+# TODO: Repop Function
+# TODO: Profile changes
+# TODO: Follow Function
+# TODO: any more needed functions?
