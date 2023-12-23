@@ -21,6 +21,7 @@ from popfeed.views import *
 urlpatterns = [
     
     path('admin/', admin.site.urls),
+    
     # User login paths
     re_path('signup', views.signup),
     re_path('login', views.login),
@@ -30,5 +31,7 @@ urlpatterns = [
     # API paths
 
     path('api/pops/<int:pop_id>/', Pop),
-    path('api/anom_timeline_pops/<int:page>/', Anom_timeline_pops),
+    path('api/anon/timeline/<int:page>/', Anom_timeline_pops),
+    path('api/user/timeline/<int:page>/', user_timelime_pops),
+
 ]
