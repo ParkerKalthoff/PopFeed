@@ -42,7 +42,7 @@ def test_token(request):
 
 # Pop Getters --------------
 
-    # Interaction Timeline --------------
+    # Timeline with interactions ::  --------------
 
     # TODO: Return Pops that were liked by a user
 
@@ -104,10 +104,51 @@ def user_timelime_with_repops(request, page):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication, SessionAuthentication])
 @permission_classes([IsAuthenticated])
-def like(request, pop_id):
-    return Response("Like || Not Implemented", status=status.HTTP_501_NOT_IMPLEMENTED)
+def isLiked(request, pop_id):
+    
+    if request.method == 'GET':
+        user = request.user
+        likes = PopLikes.objects.all().filter(user_id=user)
+        liked_pops = likes.filter(pop_id=pop_id)
+        liked_pops.values_list('pop_id', flat=True)
+        
+        if liked_pops.exists():
+            #serializer = PopLikesSerializer(liked_pops[0], many=False)
+            serializer = { "pop_id": pop_id, "liked": True }
+            return Response(serializer, status=status.HTTP_200_OK)
+        else:
+            serializer = { "pop_id": pop_id, "liked": False }
+            return Response(serializer, status=status.HTTP_200_OK)
 
-# TODO: Like Function
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated]) 
+def like(request, pop_id):
+
+    if request.method == 'PUT':
+        user = request.user
+        likes = PopLikes.objects.all().filter(user_id=user)
+        print(likes, "on", pop_id, "by", user)
+        liked_pop = likes.filter(pop_id=pop_id).values_list('pop_id', flat=True)
+        print(liked_pop, "and length", len(liked_pop))
+
+        if liked_pop.exists():
+            # Unlike
+            print("unliked on", pop_id, "by", user)
+            PopLikes.objects.filter(user_id=user, pop_id=pop_id).delete()
+            serializer = { "pop_id": pop_id, "liked": False }
+            return Response(serializer, status=status.HTTP_200_OK)
+        else:
+            print("liked on", pop_id, "by", user)
+            # Like
+            targetPop = PopPosts.objects.get(pk=pop_id)
+            PopLikes.objects.create(user_id=user, pop_id=targetPop)
+            serializer = { "pop_id": pop_id, "liked": True }
+            return Response(serializer, status=status.HTTP_200_OK)
+    
+
+
+
 # TODO: Repop Function
 # TODO: Profile changes
 # TODO: Follow Function

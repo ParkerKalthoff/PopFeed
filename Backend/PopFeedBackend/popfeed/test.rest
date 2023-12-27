@@ -1,33 +1,61 @@
+###############################################################
+### ACCOUNTS ACCOUNTS ACCOUNTS ACCOUNTS ACCOUNTS ACCOUNTS AC###
+###############################################################
+
+### Account Creation
+
 POST http://127.0.0.1:8000/signup 
 Content-Type: application/json
 
 { "username": "testuser4", "password": "password!", "email": "test4@mail.com" }
 
-###
+### Account Login
 
 POST http://127.0.0.1:8000/login 
 Content-Type: application/json
 
 { "username": "testuser4", "password": "password!" }
 
-###
+### Account Auth Testing
 
 GET http://127.0.0.1:8000/test_token 
 Content-Type: application/json
 Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
 
-###
+###############################################################
+### POPS POPS POPS POPS POPS POPS POPS POPS POPS POPS POPS P###
+###############################################################
+
+### Single Pop Retrieval
 
 GET http://127.0.0.1:8000/api/pops/1
 Content-Type: application/json
 
-###
+### Anomymous Timeline Retrieval
 
-GET http://127.0.0.1:8000/api/anon/timeline/1/
+GET http://127.0.0.1:8000/pops/timeline/anon/1/
 Content-Type: application/json
 
-###
+### User Timeline Retrieval w/o Repops
 
-GET http://127.0.0.1:8000/api/user/timeline/2/
+GET http://127.0.0.1:8000/pops/timeline/user/1/
+Content-Type: application/json
+Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
+
+### User Timeline Retrieval w/ Repops
+
+###############################################################
+### INTERACTIONS INTERACTIONS INTERACTIONS INTERACTIONS INTE###
+###############################################################
+
+### Like Retrieval
+
+GET http://127.0.0.1:8000/pops/interaction/isliked/1/
+Content-Type: application/json
+Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
+
+### Like Toggle
+
+PUT http://127.0.0.1:8000/pops/interaction/like/1/
 Content-Type: application/json
 Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
