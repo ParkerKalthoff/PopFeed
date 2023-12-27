@@ -101,6 +101,7 @@ def user_timelime_with_repops(request, page):
 
 # Pop Interactions --------------
 
+    # Like Functions --------------
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication, SessionAuthentication])
 @permission_classes([IsAuthenticated])
@@ -145,11 +146,51 @@ def like(request, pop_id):
             PopLikes.objects.create(user_id=user, pop_id=targetPop)
             serializer = { "pop_id": pop_id, "liked": True }
             return Response(serializer, status=status.HTTP_200_OK)
+        
+    # Repop Functions
+        
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def isRepoped(request, pop_id):
     
+    if request.method == 'GET':
+        user = request.user
+        repops = PopRepop.objects.all().filter(user_id=user)
+        repoped_pops = repops.filter(pop_id=pop_id)
+        repoped_pops.values_list('pop_id', flat=True)
+        
+        if repoped_pops.exists():
+            serializer = { "pop_id": pop_id, "repoped": True }
+            return Response(serializer, status=status.HTTP_200_OK)
+        else:
+            serializer = { "pop_id": pop_id, "repoped": False }
+            return Response(serializer, status=status.HTTP_200_OK)
 
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated]) 
+def repop(request, pop_id):
 
+    if request.method == 'PUT':
+        user = request.user
+        repops = PopRepop.objects.all().filter(user_id=user)
+        print(repops, "on", pop_id, "by", user)
+        repoped = repops.filter(pop_id=pop_id).values_list('pop_id', flat=True)
+        print(repoped)
 
-# TODO: Repop Function
+        if repoped.exists():
+            PopRepop.objects.filter(user_id=user, pop_id=pop_id).delete()
+            serializer = { "pop_id": pop_id, "repoped": False }
+            return Response(serializer, status=status.HTTP_200_OK)
+        else:
+            targetPop = PopPosts.objects.get(pk=pop_id)
+            PopRepop.objects.create(user_id=user, pop_id=targetPop)
+            serializer = { "pop_id": pop_id, "repoped": True }
+            return Response(serializer, status=status.HTTP_200_OK)
+        
+
 # TODO: Profile changes
 # TODO: Follow Function
 # TODO: any more needed functions?
