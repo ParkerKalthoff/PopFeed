@@ -97,16 +97,30 @@ def user_timelime(request, page):
 @authentication_classes([TokenAuthentication, SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def user_timelime_with_repops(request, page): 
+
+    if request.method == 'GET':
+        page = max(int(page), 1)
+        start_index = (page - 1) * 10
+        end_index = page * 10
+        user = request.user
+
+        following = UserFollowing.objects.all().filter(follower_id=user)
+        following = [following.followee_id for following in following]
+        following = [following.id for following in following]
+
+        repops = PopRepop.objects.all().filter(user_id=user)
+        recent_pops = PopPosts.objects.filter(user_id__id__in=following).order_by('-created_at')[start_index:end_index]
+
     return Response("User timeline w/ Repops || Not Implemented", status=status.HTTP_501_NOT_IMPLEMENTED)
 
 # Pop Interactions --------------
 
     # Like Functions --------------
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 @authentication_classes([TokenAuthentication, SessionAuthentication])
-@permission_classes([IsAuthenticated])
-def isLiked(request, pop_id):
-    
+@permission_classes([IsAuthenticated]) 
+def like(request, pop_id):
+
     if request.method == 'GET':
         user = request.user
         likes = PopLikes.objects.all().filter(user_id=user)
@@ -121,26 +135,17 @@ def isLiked(request, pop_id):
             serializer = { "pop_id": pop_id, "liked": False }
             return Response(serializer, status=status.HTTP_200_OK)
 
-@api_view(['PUT'])
-@authentication_classes([TokenAuthentication, SessionAuthentication])
-@permission_classes([IsAuthenticated]) 
-def like(request, pop_id):
-
     if request.method == 'PUT':
         user = request.user
         likes = PopLikes.objects.all().filter(user_id=user)
-        print(likes, "on", pop_id, "by", user)
         liked_pop = likes.filter(pop_id=pop_id).values_list('pop_id', flat=True)
-        print(liked_pop, "and length", len(liked_pop))
 
         if liked_pop.exists():
             # Unlike
-            print("unliked on", pop_id, "by", user)
             PopLikes.objects.filter(user_id=user, pop_id=pop_id).delete()
             serializer = { "pop_id": pop_id, "liked": False }
             return Response(serializer, status=status.HTTP_200_OK)
         else:
-            print("liked on", pop_id, "by", user)
             # Like
             targetPop = PopPosts.objects.get(pk=pop_id)
             PopLikes.objects.create(user_id=user, pop_id=targetPop)
@@ -148,13 +153,12 @@ def like(request, pop_id):
             return Response(serializer, status=status.HTTP_200_OK)
         
     # Repop Functions
-        
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 @authentication_classes([TokenAuthentication, SessionAuthentication])
-@permission_classes([IsAuthenticated])
-def isRepoped(request, pop_id):
-    
+@permission_classes([IsAuthenticated]) 
+def repop(request, pop_id):
+
     if request.method == 'GET':
         user = request.user
         repops = PopRepop.objects.all().filter(user_id=user)
@@ -168,17 +172,10 @@ def isRepoped(request, pop_id):
             serializer = { "pop_id": pop_id, "repoped": False }
             return Response(serializer, status=status.HTTP_200_OK)
 
-@api_view(['PUT'])
-@authentication_classes([TokenAuthentication, SessionAuthentication])
-@permission_classes([IsAuthenticated]) 
-def repop(request, pop_id):
-
     if request.method == 'PUT':
         user = request.user
         repops = PopRepop.objects.all().filter(user_id=user)
-        print(repops, "on", pop_id, "by", user)
         repoped = repops.filter(pop_id=pop_id).values_list('pop_id', flat=True)
-        print(repoped)
 
         if repoped.exists():
             PopRepop.objects.filter(user_id=user, pop_id=pop_id).delete()

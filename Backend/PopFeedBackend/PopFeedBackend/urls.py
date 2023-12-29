@@ -35,7 +35,7 @@ urlpatterns = [
     path('pops/timeline/anon/<int:page>/', anom_timeline),
     path('pops/timeline/user/<int:page>/', user_timelime),
         # User Interactions
-    path('pops/interaction/isliked/<int:pop_id>/', isLiked),
     path('pops/interaction/like/<int:pop_id>/', like),
+    path('pops/interaction/repop/<int:pop_id>/', repop),
 
 ]

@@ -50,12 +50,26 @@ Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
 
 ### Like Retrieval
 
-GET http://127.0.0.1:8000/pops/interaction/isliked/1/
+GET http://127.0.0.1:8000/pops/interaction/like/1/
 Content-Type: application/json
 Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
 
 ### Like Toggle
 
 PUT http://127.0.0.1:8000/pops/interaction/like/1/
+Content-Type: application/json
+Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
+
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ###
+
+### Repop Retrieval
+
+GET http://127.0.0.1:8000/pops/interaction/repop/1/
+Content-Type: application/json
+Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
+
+### Repop Toggle
+
+PUT http://127.0.0.1:8000/pops/interaction/repop/1/
 Content-Type: application/json
 Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
