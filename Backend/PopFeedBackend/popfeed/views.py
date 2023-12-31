@@ -131,11 +131,26 @@ def user_timelime_with_repops(request, page):
         following = [following.id for following in following]
 
         pops = PopPosts.objects.filter(user_id__in=following).order_by('-created_at')
-        repops = PopRepop.objects.filter(user_id=following).order_by('-created_at')
+        repops = PopRepop.objects.filter(user_id__in=following).order_by('-created_at')
+
+        combined = sorted(
+            chain(pops, repops),
+            key=lambda instance: instance.created_at,
+        )[start_index:end_index]
 
 
+        print(combined, "combined length" , len(combined))
 
-        return Response("User timeline w/ Repops || Not Implemented", status=status.HTTP_501_NOT_IMPLEMENTED)
+        timeline = []
+        for item in combined:
+            if isinstance(item, PopPosts):
+                timeline.append(PopPostsSerializer(item).data)
+            else:
+                repop = PopRepopSerializer(item).data
+                repop['pop'] = PopPostsSerializer(item.pop_id).data
+                timeline.append(repop)
+
+        return Response(timeline, status=status.HTTP_200_OK)
 
 # Pop Interactions --------------
 
