@@ -3,14 +3,17 @@ from .models import *
 
 # Users
 
-
-
-# Content
+class UserAccountSerializer_With_Password_And_Email(serializers.ModelSerializer):
+    class Meta:
+        model = UserAccount
+        fields = ['id', 'username','email','password','handle', 'bio']
 
 class UserAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAccount
-        fields = ['id', 'username','email','password','handle', 'bio']
+        fields = ['id', 'username','handle', 'bio']
+
+# Content
 
 class UserFollowingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,7 +29,6 @@ class PopLikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PopLikes
         fields = ['pop_id', 'user_id', 'created_at']
-
 
 class PopRepopSerializer(serializers.ModelSerializer):
     class Meta:

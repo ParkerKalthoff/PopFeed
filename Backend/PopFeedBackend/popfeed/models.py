@@ -38,3 +38,12 @@ class PopRepop(models.Model):
     class Meta:
         unique_together = (("pop_id", "user_id"),)
         managed = False
+
+class PopBookmark(models.Model):
+    pop_id = models.ForeignKey(PopPosts, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    # Primary Key
+    class Meta:
+        unique_together = (("pop_id", "user_id"),)
+        managed = False

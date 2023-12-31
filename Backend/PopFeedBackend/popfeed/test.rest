@@ -22,13 +22,19 @@ GET http://127.0.0.1:8000/test_token
 Content-Type: application/json
 Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
 
+### Following check
+
+GET http://127.0.0.1:8000/following
+Content-Type: application/json
+Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
+
 ###############################################################
 ### POPS POPS POPS POPS POPS POPS POPS POPS POPS POPS POPS P###
 ###############################################################
 
 ### Single Pop Retrieval
 
-GET http://127.0.0.1:8000/api/pops/1
+GET http://127.0.0.1:8000/pops/1
 Content-Type: application/json
 
 ### Anomymous Timeline Retrieval
@@ -43,6 +49,11 @@ Content-Type: application/json
 Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
 
 ### User Timeline Retrieval w/ Repops
+
+GET http://127.0.0.1:8000/pops/timeline/user_with_repop/2/
+Content-Type: application/json
+Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
+
 
 ###############################################################
 ### INTERACTIONS INTERACTIONS INTERACTIONS INTERACTIONS INTE###
@@ -73,3 +84,5 @@ Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
 PUT http://127.0.0.1:8000/pops/interaction/repop/1/
 Content-Type: application/json
 Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
+
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ###

@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpRequest, JsonResponse
 from .models import *
 from .serializers import *
 from rest_framework.decorators import api_view
@@ -9,6 +8,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
+from itertools import chain
+
 
 # User Auth Apis ----------------
 @api_view(['POST'])
@@ -39,6 +41,25 @@ def signup(request):
 def test_token(request):
     print(request.user.is_authenticated)
     return Response("passed for {}".format(request.user.username))
+
+# User Profile and Other User Apis ----------------
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def following(request): 
+
+    if request.method == 'GET':
+        user = request.user
+
+        following = UserFollowing.objects.all().filter(follower_id=user)
+        following = [following.followee_id for following in following]
+        following = [following.id for following in following]
+
+        following_on = UserAccount.objects.all().filter(id__in=following)
+        serializer = UserAccountSerializer(following_on, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 # Pop Getters --------------
 
@@ -99,6 +120,7 @@ def user_timelime(request, page):
 def user_timelime_with_repops(request, page): 
 
     if request.method == 'GET':
+
         page = max(int(page), 1)
         start_index = (page - 1) * 10
         end_index = page * 10
@@ -108,10 +130,12 @@ def user_timelime_with_repops(request, page):
         following = [following.followee_id for following in following]
         following = [following.id for following in following]
 
-        repops = PopRepop.objects.all().filter(user_id=user)
-        recent_pops = PopPosts.objects.filter(user_id__id__in=following).order_by('-created_at')[start_index:end_index]
+        pops = PopPosts.objects.filter(user_id__in=following).order_by('-created_at')
+        repops = PopRepop.objects.filter(user_id=following).order_by('-created_at')
 
-    return Response("User timeline w/ Repops || Not Implemented", status=status.HTTP_501_NOT_IMPLEMENTED)
+
+
+        return Response("User timeline w/ Repops || Not Implemented", status=status.HTTP_501_NOT_IMPLEMENTED)
 
 # Pop Interactions --------------
 

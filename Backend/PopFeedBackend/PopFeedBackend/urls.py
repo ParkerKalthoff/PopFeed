@@ -26,6 +26,7 @@ urlpatterns = [
     re_path('signup', views.signup),
     re_path('login', views.login),
     re_path('test_token', views.test_token),
+    path('following', following),
 # 
 
     # API paths
@@ -34,8 +35,10 @@ urlpatterns = [
     path('pops/<int:pop_id>/', Pop),
     path('pops/timeline/anon/<int:page>/', anom_timeline),
     path('pops/timeline/user/<int:page>/', user_timelime),
+    path('pops/timeline/user_with_repop/<int:page>/', user_timelime_with_repops),
         # User Interactions
     path('pops/interaction/like/<int:pop_id>/', like),
     path('pops/interaction/repop/<int:pop_id>/', repop),
+    
 
 ]
