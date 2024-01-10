@@ -7,7 +7,8 @@
 POST http://127.0.0.1:8000/signup 
 Content-Type: application/json
 
-{ "username": "testuser4", "password": "password!", "email": "test4@mail.com" }
+{ "username": "testuser4", "password": "testuser4", "email": "testuser4@mail.com" }
+
 
 ### Account Login
 
@@ -86,3 +87,9 @@ Content-Type: application/json
 Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ###
+
+### Bookmark Retrieval - page
+
+GET http://127.0.0.1:8000/pops/interaction/bookmark/1/
+Content-Type: application/json
+Authorization: token d75a58f9cf4c2a629dcc0255aea8267d8335d815

@@ -15,6 +15,13 @@ class UserAccountSerializer(serializers.ModelSerializer):
         model = UserAccount
         fields = ['id', 'username','handle', 'bio']
 
+### - ### - ### - ### - ### - ### - ### - ### - ### - 
+
+class UserAccountSerializer_No_Bio(serializers.ModelSerializer):
+    class Meta:
+        model = UserAccount
+        fields = ['id', 'username','handle']
+
 # Content # Content # Content # Content # Content # Content 
 
 class UserFollowingSerializer(serializers.ModelSerializer):
@@ -32,6 +39,11 @@ class PopPostsSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         return {"pop": data}
+
+class PopPostsSerializer_No_Title(serializers.ModelSerializer):
+    class Meta:
+        model = PopPosts
+        fields = ['pop_id', 'user_id', 'created_at', 'content', 'reply_to']
 
 ### - ### - ### - ### - ### - ### - ### - ### - ### - 
 
@@ -55,5 +67,13 @@ class PopRepopSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         return {"repop": data}
 
+### - ### - ### - ### - ### - ### - ### - ### - ### - 
 
-        
+class PopBookmarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PopBookmark
+        fields = ['pop_id', 'user_id', 'created_at']
+    
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        return {"bookmark": data}

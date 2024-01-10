@@ -52,9 +52,7 @@ def following(request):
     if request.method == 'GET':
         user = request.user
 
-        following = UserFollowing.objects.all().filter(follower_id=user)
-        following = [following.followee_id for following in following]
-        following = [following.id for following in following]
+        following = userFollowingIDs(user)
 
         following_on = UserAccount.objects.all().filter(id__in=following)
         serializer = UserAccountSerializer(following_on, many=True)
@@ -105,9 +103,7 @@ def user_timelime(request, page):
         start_index = (page - 1) * 10
         end_index = page * 10
         user = request.user
-        following = UserFollowing.objects.all().filter(follower_id=user)
-        following = [following.followee_id for following in following]
-        following = [following.id for following in following]
+        following = userFollowingIDs(user)
         recent_pops = PopPosts.objects.filter(user_id__id__in=following).order_by('-created_at')[start_index:end_index]
         serializer = PopPostsSerializer(recent_pops, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -120,15 +116,11 @@ def user_timelime(request, page):
 def user_timelime_with_repops(request, page): 
 
     if request.method == 'GET':
-
-        page = max(int(page), 1)
-        start_index = (page - 1) * 10
-        end_index = page * 10
+        
+        start_index, end_index = __page__(page)
         user = request.user
 
-        following = UserFollowing.objects.all().filter(follower_id=user)
-        following = [following.followee_id for following in following]
-        following = [following.id for following in following]
+        following = userFollowingIDs(user)
 
         pops = PopPosts.objects.filter(user_id__in=following).order_by('-created_at')
         repops = PopRepop.objects.filter(user_id__in=following).order_by('-created_at')
@@ -138,16 +130,16 @@ def user_timelime_with_repops(request, page):
             key=lambda instance: instance.created_at,
         )[start_index:end_index]
 
-
-        print(combined, "combined length" , len(combined))
-
         timeline = []
         for item in combined:
             if isinstance(item, PopPosts):
-                timeline.append(PopPostsSerializer(item).data)
+                pop = PopPostsSerializer(item).data
+                pop['pop']['interactions'] = retrieveUserAndTotalInteractions(user, item.pop_id)
+                timeline.append(pop)
             else:
                 repop = PopRepopSerializer(item).data
-                repop['pop'] = PopPostsSerializer(item.pop_id).data
+                repop['repop']['pop'] = PopPostsSerializer_No_Title(item.pop_id).data
+                repop['repop']['pop']['interactions'] = retrieveUserAndTotalInteractions(user, item.pop_id.pop_id)
                 timeline.append(repop)
 
         return Response(timeline, status=status.HTTP_200_OK)
@@ -226,7 +218,114 @@ def repop(request, pop_id):
             serializer = { "pop_id": pop_id, "repoped": True }
             return Response(serializer, status=status.HTTP_200_OK)
         
+    # TODO: Bookmark Functions --------------
+
+@api_view(['GET', 'PUT'])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated]) 
+def bookmark(request, page=0):
+
+    if request.method == 'GET':
+
+        start_index, end_index = __page__(page)
+        user = request.user
+        
+        following = userFollowingIDs(user)
+
+        bookmarks = PopBookmark.objects.filter(user_id__id__in=following).order_by('-created_at')[start_index:end_index]
+        serializer = PopBookmarkSerializer(bookmarks, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        if repoped_pops.exists():
+            serializer = { "pop_id": pop_id, "repoped": True }
+            return Response(serializer, status=status.HTTP_200_OK)
+        else:
+            serializer = { "pop_id": pop_id, "repoped": False }
+            return Response(serializer, status=status.HTTP_200_OK)
+
 
 # TODO: Profile changes
 # TODO: Follow Function
 # TODO: any more needed functions?
+        
+
+### - ### - ### - ### - ### - ### - ### - ### - ### -
+### Functions ### ### Functions ### ### Functions ###
+### - ### - ### - ### - ### - ### - ### - ### - ### -
+        
+# Totals for single pop
+
+def totalLikes(pop_id):
+    return PopLikes.objects.filter(pop_id=pop_id).count()
+
+def totalRepop(pop_id):
+    return PopRepop.objects.filter(pop_id=pop_id).count()
+
+def totalReplies(pop_id):
+    return PopPosts.objects.filter(reply_to=pop_id).count()
+
+def retrieveInteractions(pop_id):
+    return {
+        "likes": totalLikes(pop_id),
+        "repops": totalRepop(pop_id),
+        "replies": totalReplies(pop_id)
+    }
+
+# Get user interactions for single pop
+
+def userLiked(user, pop_id):
+    likes = PopLikes.objects.all().filter(user_id=user)
+    liked_pops = likes.filter(pop_id=pop_id)
+    liked_pops.values_list('pop_id', flat=True)
+    
+    if liked_pops.exists():
+        return True
+    else:
+        return False
+    
+def userRepoped(user, pop_id):
+    repops = PopRepop.objects.all().filter(user_id=user)
+    repops = repops.filter(pop_id=pop_id)
+    repops.values_list('pop_id', flat=True)
+    
+    if repops.exists():
+        return True
+    else:
+        return False
+    
+def userBookmarked(user, pop_id):
+    bookmarks = PopBookmark.objects.all().filter(user_id=user)
+    bookmarks = bookmarks.filter(pop_id=pop_id)
+    bookmarks.values_list('pop_id', flat=True)
+    
+    if bookmarks.exists():
+        return True
+    else:
+        return False
+    
+def retrieveUserInteractions(user, pop_id):
+    return {
+        "liked": userLiked(user, pop_id),
+        "repoped": userRepoped(user, pop_id),
+        #"bookmarked": userBookmarked(user, pop_id)
+    }
+    
+def retrieveUserAndTotalInteractions(user, pop_id):
+    return {
+        "total": retrieveInteractions(pop_id),
+        "user": retrieveUserInteractions(user, pop_id)
+    }
+
+# others
+
+def userFollowingIDs(user):
+    following = UserFollowing.objects.all().filter(follower_id=user)
+    following = [following.followee_id for following in following]
+    following = [following.id for following in following]
+    return following
+
+def __page__(page):
+    page = max(int(page), 1)
+    start_index = (page - 1) * 10
+    end_index = page * 10
+    return (start_index, end_index)

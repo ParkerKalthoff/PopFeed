@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework', # HUR HUR HUR BWAAHAHAHH
     'rest_framework.authtoken', # weeebboobebewoebwoebowbwoebwoe
     'corsheaders', #bwahahahha
+    'django_extensions', # bw
 ]
 
 MIDDLEWARE = [

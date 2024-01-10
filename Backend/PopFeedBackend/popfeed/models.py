@@ -12,7 +12,6 @@ class UserFollowing(models.Model):
     # Primary Key
     class Meta:
         unique_together = (("follower_id", "followee_id"),)
-        managed = False
 
 class PopPosts(models.Model):
     pop_id = models.AutoField(primary_key=True)
@@ -28,7 +27,6 @@ class PopLikes(models.Model):
     # Primary Key
     class Meta:
         unique_together = (("pop_id", "user_id"),)
-        managed = False
 
 class PopRepop(models.Model):
     pop_id = models.ForeignKey(PopPosts, on_delete=models.CASCADE)
@@ -37,7 +35,6 @@ class PopRepop(models.Model):
     # Primary Key
     class Meta:
         unique_together = (("pop_id", "user_id"),)
-        managed = False
 
 class PopBookmark(models.Model):
     pop_id = models.ForeignKey(PopPosts, on_delete=models.CASCADE)
@@ -46,4 +43,3 @@ class PopBookmark(models.Model):
     # Primary Key
     class Meta:
         unique_together = (("pop_id", "user_id"),)
-        managed = False
