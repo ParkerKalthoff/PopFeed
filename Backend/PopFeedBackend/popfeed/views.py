@@ -24,7 +24,7 @@ def login(request):
 
 @api_view(['POST'])
 def signup(request):
-    serializer = UserAccountSerializer(data=request.data)
+    serializer = UserAccountSerializer_With_Password_And_Email(data=request.data)
     if serializer.is_valid():
         serializer.save()
         user = UserAccount.objects.get(username=request.data['username'])
@@ -220,28 +220,28 @@ def repop(request, pop_id):
         
     # TODO: Bookmark Functions --------------
 
+
 @api_view(['GET', 'PUT'])
 @authentication_classes([TokenAuthentication, SessionAuthentication])
 @permission_classes([IsAuthenticated]) 
-def bookmark(request, page=0):
+def single_bookmark(request, pop_id):
 
     if request.method == 'GET':
 
-        start_index, end_index = __page__(page)
         user = request.user
-        
-        following = userFollowingIDs(user)
+        bookmarks = PopBookmark.objects.all().filter(user_id=user)
+        bookmarks = bookmarks.filter(pop_id=pop_id)
 
-        bookmarks = PopBookmark.objects.filter(user_id__id__in=following).order_by('-created_at')[start_index:end_index]
-        serializer = PopBookmarkSerializer(bookmarks, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        if repoped_pops.exists():
-            serializer = { "pop_id": pop_id, "repoped": True }
+        if bookmarks.exists():
+            serializer = { "pop_id": pop_id, "bookmarked": True }
             return Response(serializer, status=status.HTTP_200_OK)
         else:
-            serializer = { "pop_id": pop_id, "repoped": False }
+            serializer = { "pop_id": pop_id, "bookmarked": False }
             return Response(serializer, status=status.HTTP_200_OK)
+        
+    if request.method == 'PUT':
+        user = request.user
+        
 
 
 # TODO: Profile changes
