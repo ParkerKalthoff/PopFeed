@@ -72,7 +72,7 @@ class PopRepopSerializer(serializers.ModelSerializer):
 class PopBookmarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = PopBookmark
-        fields = ['pop_id', 'user_id', 'created_at']
+        fields = ['pop_id', 'user_id']
     
     def to_representation(self, instance):
         data = super().to_representation(instance)

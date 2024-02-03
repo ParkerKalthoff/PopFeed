@@ -220,6 +220,21 @@ def repop(request, pop_id):
         
     # TODO: Bookmark Functions --------------
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def page_bookmark(request, page):
+    if request.method == 'GET':
+
+        user = request.user
+        start_index, end_index = __page__(page)
+
+        bookmarks = PopBookmark.objects.all().filter(user_id=user).order_by('-created_at')[start_index:end_index]
+        serializer = PopBookmarkSerializer(bookmarks, many=True)
+        
+
+
+
 
 @api_view(['GET', 'PUT'])
 @authentication_classes([TokenAuthentication, SessionAuthentication])
@@ -240,8 +255,21 @@ def single_bookmark(request, pop_id):
             return Response(serializer, status=status.HTTP_200_OK)
         
     if request.method == 'PUT':
-        user = request.user
         
+        user = request.user
+        bookmark = PopBookmark.objects.all().filter(user_id=user)
+        bookmark = bookmark.filter(pop_id=pop_id).values_list('pop_id', flat=True)
+
+        if bookmark.exists():
+            PopBookmark.objects.filter(user_id=user, pop_id=pop_id).delete()
+            serializer = { "pop_id": pop_id, "bookmarked": False }
+            return Response(serializer, status=status.HTTP_200_OK)
+        else:
+            targetPop = PopBookmark.objects.get(pk=pop_id)
+            PopBookmark.objects.create(user_id=user, pop_id=targetPop)
+            serializer = { "pop_id": pop_id, "bookmarked": True }
+            return Response(serializer, status=status.HTTP_200_OK)
+
 
 
 # TODO: Profile changes
