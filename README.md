@@ -2,7 +2,7 @@ PopFeed 🎈
 
 PopFeed is a Twitter clone I am developing to expand my skillset
 
-I am using Django for my backend and Angular for my frontend
+I am using Django for my backend and React for my frontend, and Firebase for image managament 
 
 I intend to implement customizability, pagination, and responsive design over time.
 
