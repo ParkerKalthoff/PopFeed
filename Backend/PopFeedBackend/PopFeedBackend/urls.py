@@ -39,7 +39,7 @@ urlpatterns = [
         # User Interactions
     path('pops/interaction/like/<int:pop_id>/', like),
     path('pops/interaction/repop/<int:pop_id>/', repop),
-    path('pops/interaction/bookmark/<int:page>/', bookmark),
+    #path('pops/interaction/bookmark/<int:page>/', bookmark),
     
 
 ]
