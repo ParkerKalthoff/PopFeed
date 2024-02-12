@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-useEffect(() => {
+function pop() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const { popid } = useParams();
+
+  useEffect(() => {
     // Define a function to fetch data
     const fetchData = async () => {
       try {
@@ -18,27 +25,6 @@ useEffect(() => {
       }
     };
 
-function MyComponent() {
-    const [data, setData] = useState(null);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);  
-
-function Pop() {
-  let { popid } = useParams();
-
-  return (
-    <div>
-      <h2>Pop Component</h2>
-      <p>popid: {popid}</p>
-      
-    </div>
-  );
-}
-
-export default Pop;
-
-  
-
     // Call the function to fetch data when the component mounts
     fetchData();
 
@@ -54,9 +40,11 @@ export default Pop;
 
   return (
     <div>
+      <h2>Pop Component</h2>
+      <p>popid: {popid}</p>
       {/* Render your data here */}
     </div>
   );
 }
 
-export default MyComponent;
+export default pop
